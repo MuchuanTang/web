@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>search</title>
+    <style>
+        body {
+            background: #091039;
+            color: #fff;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .box {
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+            left: 10%;
+        }
+
+        .boxS {
+            width: 100%;
+            margin: 50px;
+            background: #44534c;
+            border: 1px solid #fff;
+            border-radius: 10px;
+        }
+
+        .row {
+            padding: 10px;
+        }
+
+        .row span {
+            font-weight: bold;
+        }
+
+        .title {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .title a {
+            color: #44534c;
+            font-size: 22px;
+            margin-top: 20px;
+        }
+
+        th a {
+            color: #44534c;
+            font-size: 22px;
+        }
+
+        button {
+            background-color: #44534c;
+            border-radius: 4px;
+        }
+
+        .details {
+            display: flex;
+            flex-wrap: wrap;
+            color: #fff;
+        }
+
+        .details label {
+            margin-left: 30px;
+        }
+
+        .details span {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex;">
+        <div class="title" style="width: 10%;">
+            <a href="home.html">home</a>
+            <a href="search.html">search</a>
+            <a href="fundraiser.html">details</a>
+        </div>
+        <div class="box" style="width: 90%;">
+            <div class="row">
+                <div style="display: flex;justify-content: center;align-items: center;">
+                    <label for="CATEGORYID">CATEGORYID： </label>
+                    <select name="CATEGORYID" style="width: 200px;height: 20px;" class="form-control" id="CATEGORYID">
+                    </select>
+                    <a href="javascript:void(0);" onclick="Query()" style="margin: 30px;">Query</a>
+                    <a href="javascript:void(0);" onclick="Clear()" style="margin: 30px;">reset</a>
+                </div>
+                <div id="body">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function ajax(obj) {
+            let type = obj.type;
+            let url = obj.url;
+            let callback = obj.callback;
+            let xhr = new XMLHttpRequest();
+            xhr.open(type, url);
+            xhr.send();
+            xhr.onreadystatechange = function () {
+                callback(JSON.parse(xhr.responseText));
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function init() {
+            console.log('init');
+            ajax({
+                url: "http://localhost:4001/Fundraisers/List",
+                type: "get",
+                callback: function (data) {
+                    console.log(data);
+                    if (data.length) {
+                        let tbodyinnerHTML = ''
+                        data.map((item) => {
+                            tbodyinnerHTML += `<option value=${item.CATEGORYID}>${item.NAME}</option>`
+                        })
+                        document.getElementById("CATEGORYID").innerHTML = tbodyinnerHTML;
+                        document.getElementById('CATEGORYID').value = ''
+                    }
+                }
+            });
+        };
+        init()
+        function Query() {
+            let CATEGORYID = document.getElementById('CATEGORYID').value
+            ajax({
+                url: `http://localhost:4001/Fundraisers/getOneFundraiser?CATEGORYID=${CATEGORYID}`,
+                type: "get",
+                callback: function (data) {
+                    console.log(data);
+                    let tbodyinnerHTML = ''
+                    data.map((item) => {
+                        tbodyinnerHTML += `
+                        <div style="display: flex;">
+                        <div><a href="fundraiser.html?${item.FUNDRAISERID}"><img src="${item.URL}" alt="" style="width: 100px;height: 100px;margin: 0 20px;"></a></div>
+                        <div style="margin: 10px;">
+                            <label>FUNDRAISERID:</label>
+                            <span id="FUNDRAISERID">${item.FUNDRAISERID}</span>
+                            <label>ORGANIZER:</label>
+                            <span id="ORGANIZER">${item.ORGANIZER}</span>
+                            <label>CAPTION:</label>
+                            <span id="CAPTION">${item.CAPTION}</span>
+                            <label>TARGET_FUNDING:</label>
+                            <span id="TARGET_FUNDING">${item.TARGET_FUNDING}</span>
+                            <label>CURRENT_FUNDING:</label>
+                            <span id="CURRENT_FUNDING">${item.CURRENT_FUNDING}</span>
+                            <label>CITY:</label>
+                            <span id="CITY">${item.CITY}</span>
+                            <label>ACTIVE:</label>
+                            <span id="ACTIVE">${item.ACTIVE}</span>
+                            <label>CATEGORYID:</label>
+                            <span id="CATEGORYID">${item.CATEGORYID}</span>
+                        </div>
+                    </div>
+                        `
+                    })
+                    document.getElementById("body").innerHTML = tbodyinnerHTML;
+
+                }
+            });
+        };
+        function Clear() {
+            document.getElementById('CATEGORYID').value = ''
+        };
+
+    </script>
+</body>
+
+</html>
