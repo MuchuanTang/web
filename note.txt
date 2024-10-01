@@ -1,0 +1,1 @@
+进入api目录，在地址栏输入cmd打开命令板，执行 node server.js

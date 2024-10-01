@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>details</title>
+    <style>
+        body {
+            background: #091039;
+            color: #fff;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .box {
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+            left: 10%;
+        }
+
+        .boxS {
+            width: 100%;
+            margin: 50px;
+            background: #44534c;
+            border: 1px solid #fff;
+            border-radius: 10px;
+        }
+
+        .row {
+            padding: 10px;
+        }
+
+        .row span {
+            font-weight: bold;
+        }
+
+        .title {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .title a {
+            color: #44534c;
+            font-size: 22px;
+            margin-top: 20px;
+        }
+
+        th a {
+            color: #44534c;
+            font-size: 22px;
+        }
+
+        button {
+            background-color: #44534c;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        tbody th {
+            width: 16%;
+            border: 1px solid #44534c4a;
+        }
+
+        .details {
+            display: flex;
+            flex-wrap: wrap;
+            color: #fff;
+        }
+
+        .details label {
+            margin-left: 30px;
+            font-size: 16px;
+            color: #474747;
+        }
+
+        .details span {
+            font-size: 18px;
+            margin-left: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex;">
+        <div class="title" style="width: 10%;">
+            <a href="home.html">home</a>
+            <a href="search.html">search</a>
+            <a href="fundraiser.html">details</a>
+        </div>
+        <div class="box" style="width: 90%;display: flex;padding: 30px;">
+            <div style="text-align: center;width: 40%;">
+                <img id="imgurl" src="" alt="" style="width: 300px;height: 300px;">
+            </div>
+            <div class="details" style="display: flex;flex-direction: column;width: 60%;">
+                <label>FUNDRAISERID:</label>
+                <span id="FUNDRAISERID">--</span>
+                <label>ORGANIZER:</label>
+                <span id="ORGANIZER">--</span>
+                <label>CAPTION:</label>
+                <span id="CAPTION">--</span>
+                <label>TARGET_FUNDING:</label>
+                <span id="TARGET_FUNDING">--</span>
+                <label>CURRENT_FUNDING:</label>
+                <span id="CURRENT_FUNDING">--</span>
+                <label>CITY:</label>
+                <span id="CITY">--</span>
+                <label>ACTIVE:</label>
+                <span id="ACTIVE">--</span>
+                <label>CATEGORYID:</label>
+                <span id="CATEGORYID">--</span>
+            </div>
+        </div>
+
+    </div>
+    <div style="display: flex;justify-content: center;">
+        <button type="button" onclick="alert('This feature is under contruction')" style="margin: 30px;">Donate</button>
+    </div>
+    <script type="text/javascript">
+        function ajax(obj) {
+            let type = obj.type;
+            let url = obj.url;
+            let callback = obj.callback;
+            let xhr = new XMLHttpRequest();
+            xhr.open(type, url);
+            xhr.send();
+            xhr.onreadystatechange = function () {
+                callback(JSON.parse(xhr.responseText));
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function init() {
+            console.log(location.search);
+            let param = location.search ? location.search.split('?') : ''
+            if (!param) {
+                return;
+            }
+            console.log('init');
+            ajax({
+                url: `http://localhost:4001/Fundraisers/Details?FUNDRAISERID=${param[1]}`,
+                type: "get",
+                callback: function (data) {
+                    console.log(data);
+                    document.getElementById("FUNDRAISERID").innerHTML = data[0].FUNDRAISERID;
+                    document.getElementById("ORGANIZER").innerHTML = data[0].ORGANIZER;
+                    document.getElementById("CAPTION").innerHTML = data[0].CAPTION;
+                    document.getElementById("TARGET_FUNDING").innerHTML = data[0].TARGET_FUNDING;
+                    document.getElementById("CURRENT_FUNDING").innerHTML = data[0].CURRENT_FUNDING;
+                    document.getElementById("CITY").innerHTML = data[0].CITY;
+                    document.getElementById("ACTIVE").innerHTML = data[0].ACTIVE;
+                    document.getElementById("CATEGORYID").innerHTML = data[0].CATEGORYID;
+                    document.getElementById("imgurl").src = data[0].URL;
+                }
+            });
+        };
+        init()
+        document.getElementById("Donate").onclick = function () {
+            alert('This feature is under contruction')
+        };
+    </script>
+</body>
+
+</html>
