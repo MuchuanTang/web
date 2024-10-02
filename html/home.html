@@ -6,15 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>home</title>
     <style>
+        /* Setting the background and text color for the body */
         body {
             background: #bbc1e5;
             color: #fff;
         }
-
+        
+        /* Removing bullet points from the list items */
         ul {
             list-style: none;
         }
 
+        /* Styling for the box container - flexible layout and wrapping of child elements */
         .box {
             display: flex;
             flex-wrap: wrap;
@@ -22,6 +25,7 @@
             left: 10%;
         }
 
+        /* Styling individual fundraiser boxes */
         .boxS {
             width: 100%;
             margin: 50px;
@@ -38,6 +42,7 @@
             font-weight: bold;
         }
 
+        /* Sidebar navigation styling */
         .title {
             display: flex;
             flex-direction: column;
@@ -46,6 +51,7 @@
             position: fixed;
             height: 100vh;
         }
+        /* Styling for navigation links */
         .title a{
             color: #44534c;
             font-size: 22px;
@@ -56,6 +62,7 @@
 
 <body>
     <div style="display: flex;">
+        <!-- Sidebar navigation with links to different pages -->
         <div class="title" style="width: 10%;">
             <a href="home.html">home</a>
             <a href="search.html">search</a>
@@ -67,11 +74,13 @@
             </div>
         </div>
     </div>
+    <!-- AJAX function to send HTTP requests -->
     <script type="text/javascript">
         function ajax(obj) {
             let type = obj.type;
             let url = obj.url;
             let callback = obj.callback;
+             // Create new XMLHttpRequest object
             let xhr = new XMLHttpRequest();
             xhr.open(type, url);
             xhr.send();
@@ -80,9 +89,13 @@
             }
         }
     </script>
+
+    <!-- Script to initialize the page content by loading active fundraisers -->
     <script type="text/javascript">
         function init() {
             console.log('init');
+
+             // Make an AJAX GET request to the specified URL to fetch active fundraisers
             ajax({
                 url: "http://localhost:4001/Fundraisers/getActiveFundraisers?active=Active",
                 type: "get",
@@ -104,6 +117,7 @@
                             </div>
                             `
                         })
+                         // Insert the generated HTML into the 'box' container
                         document.getElementById("box").innerHTML = tbodyinnerHTML;
                     }
                 }
