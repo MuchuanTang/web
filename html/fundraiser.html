@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>details</title>
     <style>
+         /* Basic styling for the body */
         body {
             background: #bbc1e5;
             color: #fff;
         }
-
+         /* Removes default bullet points from unordered lists */
         ul {
             list-style: none;
         }
@@ -28,6 +29,7 @@
             background: #44534c;
             border: 1px solid #fff;
             border-radius: 10px;
+             /* Style for a larger box with a background and rounded corners */
         }
 
         .row {
@@ -45,6 +47,7 @@
             padding: 20px;
             position: fixed;
             height: 100vh;
+            /* Title column fixed on the left side */
         }
 
         .title a {
@@ -56,11 +59,13 @@
         th a {
             color: #44534c;
             font-size: 22px;
+            /* Styling for table links */
         }
 
         button {
             background-color: #44534c;
             border-radius: 4px;
+            /* Button styling */
         }
 
         table {
@@ -70,12 +75,14 @@
         tbody th {
             width: 16%;
             border: 1px solid #44534c4a;
+              /* Style for table header cells */
         }
 
         .details {
             display: flex;
             flex-wrap: wrap;
             color: #fff;
+            /* Details section styling */
         }
 
         .details label {
@@ -87,6 +94,7 @@
         .details span {
             font-size: 18px;
             margin-left: 40px;
+            /* Styling for the span inside details */
         }
     </style>
 </head>
@@ -98,10 +106,12 @@
             <a href="search.html">search</a>
             <a href="fundraiser.html">details</a>
         </div>
+            <!-- Main content box that contains image and fundraiser details -->
         <div class="box" style="width: 90%;display: flex;padding: 30px;">
             <div style="text-align: center;width: 40%;">
                 <img id="imgurl" src="" alt="" style="width: 300px;height: 300px;">
             </div>
+               <!-- Section for displaying fundraiser details -->
             <div class="details" style="display: flex;flex-direction: column;width: 60%;">
                 <label>FUNDRAISERID:</label>
                 <span id="FUNDRAISERID">--</span>
@@ -123,10 +133,12 @@
         </div>
 
     </div>
+     <!-- Donate button which is under construction -->
     <div style="display: flex;justify-content: center;">
         <button type="button" onclick="alert('This feature is under contruction')" style="margin: 30px;">Donate</button>
     </div>
     <script type="text/javascript">
+        // AJAX function to handle API requests
         function ajax(obj) {
             let type = obj.type;
             let url = obj.url;
@@ -140,6 +152,7 @@
         }
     </script>
     <script type="text/javascript">
+        // Function to initialize the page by extracting parameters and making an AJAX call to fetch fundraiser details
         function init() {
             console.log(location.search);
             let param = location.search ? location.search.split('?') : ''
@@ -152,6 +165,7 @@
                 type: "get",
                 callback: function (data) {
                     console.log(data);
+                    // Populate the HTML with the retrieved data
                     document.getElementById("FUNDRAISERID").innerHTML = data[0].FUNDRAISERID;
                     document.getElementById("ORGANIZER").innerHTML = data[0].ORGANIZER;
                     document.getElementById("CAPTION").innerHTML = data[0].CAPTION;
@@ -165,6 +179,7 @@
             });
         };
         init()
+        // Handling the Donate button functionality (currently under construction)
         document.getElementById("Donate").onclick = function () {
             alert('This feature is under contruction')
         };
